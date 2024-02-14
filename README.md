@@ -1,1 +1,0 @@
-# PharmGarde-React-Native

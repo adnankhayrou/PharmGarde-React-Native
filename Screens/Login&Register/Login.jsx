@@ -13,6 +13,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {useEffect, useState} from 'react';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Spacing from "../../constants/Spacing";
 
 function LoginPage({props}) {
   const navigation = useNavigation();
@@ -24,16 +25,23 @@ function LoginPage({props}) {
       email: email,
       password: password,
     };
+    console.log('hanta',userData);
 
-    axios.post('', userData).then(res => {
-      console.log(res.data);
-      if (res.data.status == 'ok') {
-        Alert.alert('Logged In Successfull');
-        AsyncStorage.setItem('token', res.data.data);
-        AsyncStorage.setItem('isLoggedIn', JSON.stringify(true));
-        navigation.navigate('Home');
-      }
-    });
+    axios.post('http://localhost:3001/auth/login', userData)
+  .then(res => {
+    console.log('hna', res);
+    // if (res.data.status == 'ok') {
+    //   Alert.alert('Logged In Successfull');
+    //   AsyncStorage.setItem('token', res.data.data);
+    //   AsyncStorage.setItem('isLoggedIn', JSON.stringify(true));
+    //   navigation.navigate('Home');
+    // }
+  })
+  .catch(error => {
+    console.error('Error occurred:', error.message);
+    Alert.alert('Error', 'Failed to log in. Please try again later.');
+  });
+
   }
   async function getData() {
     const data = await AsyncStorage.getItem('isLoggedIn'); 
@@ -42,7 +50,6 @@ function LoginPage({props}) {
 
   useEffect(()=>{
     getData();
-    console.log("Hii");
   },[])
 
   return (
@@ -51,32 +58,34 @@ function LoginPage({props}) {
       keyboardShouldPersistTaps={'always'}
       style={{
         backgroundColor: 'white',
-        height:"100%"
+        height:"100%",
+        paddingHorizontal: Spacing ,
+        paddingTop: Spacing * 3,
       }}
       >
       <View style={{backgroundColor: 'white'}}>
         <View style={styles.logoContainer}>
           <Image
             style={styles.logo}
-            source={require('../../assets/images/loginLogo.png')}
+            source={require('../../assets/images/loginLogo2.jpg')}
           />
         </View>
         <View style={styles.loginContainer}>
-          <Text style={styles.text_header}>Login</Text>
+          <Text style={styles.text_header}>Welcome Back</Text>
           <View style={styles.action}>
             <FontAwesome
               name="user-o"
-              color="#420475"
+              color="#008083"
               style={styles.smallIcon}
             />
             <TextInput
-              placeholder="Mobile or Email"
+              placeholder="Email"
               style={styles.textInput}
               onChange={e => setEmail(e.nativeEvent.text)}
             />
           </View>
           <View style={styles.action}>
-            <FontAwesome name="lock" color="#420475" style={styles.smallIcon} />
+            <FontAwesome name="lock" color="#008083" style={styles.smallIcon} />
             <TextInput
               placeholder="Password"
               style={styles.textInput}

@@ -17,25 +17,21 @@ import {useState} from 'react';
 import axios from 'axios';
 
 function RegisterPage({props}) {
-  const [name, setName] = useState('');
-  const [nameVerify, setNameVerify] = useState(false);
   const [email, setEmail] = useState('');
   const [emailVerify, setEmailVerify] = useState(false);
+  const [password, setPassword] = useState('');
   const [mobile, setMobile] = useState('');
   const [mobileVerify, setMobileVerify] = useState(false);
-  const [password, setPassword] = useState('');
   const [passwordVerify, setPasswordVerify] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
   const navigation = useNavigation();
   function handelSubmit() {
     const userData = {
-      name: name,
       email,
-      mobile,
       password,
     };
-    if (nameVerify && emailVerify && passwordVerify && mobileVerify) {
+    if (emailVerify && passwordVerify) {
       axios
         .post('http://192.168.1.30:5001/register', userData)
         .then(res => {
@@ -53,15 +49,7 @@ function RegisterPage({props}) {
     }
   }
 
-  function handleName(e) {
-    const nameVar = e.nativeEvent.text;
-    setName(nameVar);
-    setNameVerify(false);
-
-    if (nameVar.length > 1) {
-      setNameVerify(true);
-    }
-  }
+  
   function handleEmail(e) {
     const emailVar = e.nativeEvent.text;
     setEmail(emailVar);
@@ -71,15 +59,7 @@ function RegisterPage({props}) {
       setEmailVerify(true);
     }
   }
-  function handleMobile(e) {
-    const mobileVar = e.nativeEvent.text;
-    setMobile(mobileVar);
-    setMobileVerify(false);
-    if (/[6-9]{1}[0-9]{9}/.test(mobileVar)) {
-      setMobile(mobileVar);
-      setMobileVerify(true);
-    }
-  }
+ 
   function handlePassword(e) {
     const passwordVar = e.nativeEvent.text;
     setPassword(passwordVar);
@@ -99,43 +79,18 @@ function RegisterPage({props}) {
         <View style={styles.logoContainer}>
           <Image
             style={styles.logo}
-            source={require('../../assets/images/loginLogo.png')}
+            source={require('../../assets/images/loginLogo2.jpg')}
           />
         </View>
         <View style={styles.loginContainer}>
-          <Text style={styles.text_header}>Register!!!</Text>
-          <View style={styles.action}>
-            <FontAwesome
-              name="user-o"
-              color="#420475"
-              style={styles.smallIcon}
-            />
-            <TextInput
-              placeholder="Name"
-              style={styles.textInput}
-              onChange={e => handleName(e)}
-            />
-            {name.length < 1 ? null : nameVerify ? (
-              <Feather name="check-circle" color="green" size={20} />
-            ) : (
-              <Error name="error" color="red" size={20} />
-            )}
-          </View>
-          {name.length < 1 ? null : nameVerify ? null : (
-            <Text
-              style={{
-                marginLeft: 20,
-                color: 'red',
-              }}>
-              Name sholud be more then 1 characters.
-            </Text>
-          )}
+          <Text style={styles.text_header}>Register Now</Text>
+  
           <View style={styles.action}>
             <Fontisto
               name="email"
-              color="#420475"
+              color="#008083"
               size={24}
-              style={{marginLeft: 0, paddingRight: 5}}
+              style={{marginLeft: 0, paddingRight: 5, marginBottom:10}}
             />
             <TextInput
               placeholder="Email"
@@ -157,36 +112,9 @@ function RegisterPage({props}) {
               Enter Proper Email Address
             </Text>
           )}
+          
           <View style={styles.action}>
-            <FontAwesome
-              name="mobile"
-              color="#420475"
-              size={35}
-              style={{paddingRight: 10, marginTop: -7, marginLeft: 5}}
-            />
-            <TextInput
-              placeholder="Mobile"
-              style={styles.textInput}
-              onChange={e => handleMobile(e)}
-              maxLength={10}
-            />
-            {mobile.length < 1 ? null : mobileVerify ? (
-              <Feather name="check-circle" color="green" size={20} />
-            ) : (
-              <Error name="error" color="red" size={20} />
-            )}
-          </View>
-          {mobile.length < 1 ? null : mobileVerify ? null : (
-            <Text
-              style={{
-                marginLeft: 20,
-                color: 'red',
-              }}>
-              Phone number with 6-9 and remaing 9 digit with 0-9
-            </Text>
-          )}
-          <View style={styles.action}>
-            <FontAwesome name="lock" color="#420475" style={styles.smallIcon} />
+            <FontAwesome name="lock" color="#008083" style={styles.smallIcon} />
             <TextInput
               placeholder="Password"
               style={styles.textInput}
@@ -218,6 +146,30 @@ function RegisterPage({props}) {
                 color: 'red',
               }}>
               Uppercase, Lowercase, Number and 6 or more characters.
+            </Text>
+          )}
+
+         <View style={styles.action}>
+         <FontAwesome name="lock" color="#008083" style={styles.smallIcon} />
+            <TextInput
+              placeholder="Confirm Password"
+              style={styles.textInput}
+              onChange={e => handleMobile(e)}
+              maxLength={10}
+            />
+            {mobile.length < 1 ? null : mobileVerify ? (
+              <Feather name="check-circle" color="green" size={20} />
+            ) : (
+              <Error name="error" color="red" size={20} />
+            )}
+          </View>
+          {mobile.length < 1 ? null : mobileVerify ? null : (
+            <Text
+              style={{
+                marginLeft: 20,
+                color: 'red',
+              }}>
+              Phone number with 6-9 and remaing 9 digit with 0-9
             </Text>
           )}
         </View>

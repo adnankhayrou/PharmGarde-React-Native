@@ -11,6 +11,7 @@ const styles=StyleSheet.create({
       },
       smallIcon: {
         marginRight: 10,
+        marginBottom: 10,
         fontSize: 24,
       },
       logoContainer: {
@@ -30,18 +31,16 @@ const styles=StyleSheet.create({
         flexDirection: 'row',
         paddingTop: 14,
         paddingBottom: 3,
-        marginTop: 15,
-    
+        marginTop: 10,
+        marginBottom:20,
         paddingHorizontal: 15,
-    
         borderWidth: 1,
-        borderColor: '#420475',
+        borderColor: '#008083',
         borderRadius: 50,
       },
       textInput: {
         flex: 1,
         marginTop: -12,
-    
         color: '#05375a',
       },
       loginContainer: {
@@ -50,15 +49,19 @@ const styles=StyleSheet.create({
         borderTopRightRadius: 30,
         paddingHorizontal: 20,
         paddingVertical: 30,
+        
       },
       header: {
         justifyContent: 'flex-end',
         paddingHorizontal: 20,
+        
       },
       text_header: {
-        color: '#420475',
+        color: '#008083',
         fontWeight: 'bold',
         fontSize: 30,
+        paddingTop:10,
+        marginBottom:20,
       },
       button: {
         alignItems: 'center',
@@ -69,7 +72,7 @@ const styles=StyleSheet.create({
       },
       inBut: {
         width: '70%',
-        backgroundColor: '#420475',
+        backgroundColor: '#008083',
         alignItems: 'center',
         paddingHorizontal: 15,
         paddingVertical: 15,
@@ -82,11 +85,13 @@ const styles=StyleSheet.create({
         borderRadius: 15,
         justifyContent: 'center',
         alignItems: 'center',
+        
       },
       bottomButton: {
         width: '100%',
         flexDirection: 'row',
         justifyContent: 'space-between',
+        
       },
       smallIcon2: {
         fontSize: 40,

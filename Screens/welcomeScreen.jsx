@@ -36,7 +36,7 @@ const WelcomeScreen = ({ navigation }) => {
               textAlign: "center",
             }}
           >
-            Discover Your Dream Job here
+            Welcome to PharmGrade
           </Text>
 
           <Text
@@ -47,7 +47,7 @@ const WelcomeScreen = ({ navigation }) => {
               marginTop: Spacing * 2,
             }}
           >
-            Explore all the existing job roles based on your interests and study major
+            PharmGrade is dedicated to providing pharmacists who are available 24/7.
           </Text>
         </View>
         <View
@@ -60,7 +60,7 @@ const WelcomeScreen = ({ navigation }) => {
           <TouchableOpacity
             onPress={() => navigation.navigate("Login")}
             style={{
-              backgroundColor: '#008083',
+              backgroundColor: Colors.green,
               paddingVertical: Spacing * 1.5,
               paddingHorizontal: Spacing * 2,
               width: "100%",
@@ -84,25 +84,6 @@ const WelcomeScreen = ({ navigation }) => {
               Join Now
             </Text>
           </TouchableOpacity>
-          {/* <TouchableOpacity
-            onPress={() => navigation.navigate("Register")}
-            style={{
-              paddingVertical: Spacing * 1.5,
-              paddingHorizontal: Spacing * 2,
-              width: "48%",
-              borderRadius: Spacing,
-            }}
-          >
-            <Text
-              style={{
-                color: Colors.text,
-                fontSize: FontSize.large,
-                textAlign: "center",
-              }}
-            >
-              Register
-            </Text>
-          </TouchableOpacity> */}
         </View>
       </View>
     </SafeAreaView>

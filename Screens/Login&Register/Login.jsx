@@ -21,33 +21,33 @@ function LoginPage({props}) {
   const [password, setPassword] = useState('');
 
   function handleSubmit() {
-    navigation.navigate('Home');
     const userData = {
       email: email,
       password: password,
     };
-    console.log('hanta',userData);
 
-  //   axios.post('http://localhost:3001/auth/login', userData)
-  // .then(res => {
-  //   console.log('hna', res);
-  //   if (res.data.status == 'ok') {
-  //     Alert.alert('Logged In Successfull');
-  //     AsyncStorage.setItem('token', res.data.data);
-  //     AsyncStorage.setItem('isLoggedIn', JSON.stringify(true));
-  //     navigation.navigate('Home');
-  //   }
-  // })
-  // .catch(error => {
-  //   console.error('Error occurred:', error.message);
-  //   Alert.alert('Error', 'Failed to log in. Please try again later.');
-  // });
+    axios.post('http://10.0.2.2:3001/auth/login', userData)
+  .then(res => {
+    const userData = res.data;
+    if (res.status == 201) {
+      Alert.alert('Logged In Successfull');
+      AsyncStorage.setItem('isLoggedIn', JSON.stringify(userData));
+      navigation.navigate('Home');
+    }
+  })
+  .catch(error => {
+    console.error('Error occurred:', error.message);
+    Alert.alert('Error', 'Failed to log in. Please try again later.');
+  });
 
   }
   
   async function getData() {
     const data = await AsyncStorage.getItem('isLoggedIn'); 
-    console.log(data, 'at app.jsx');
+    console.log('in app.jsx',data);
+    if(data){
+      navigation.navigate('Home');
+    }
   }
 
   useEffect(()=>{

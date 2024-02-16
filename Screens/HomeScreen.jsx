@@ -37,7 +37,10 @@ const HomeScreen = () => {
     axios.request(options)
     .then(res => {
       const pharmData = res.data;
-      setData(pharmData)
+      const uniqueData = Array.from(new Set(pharmData.map(item => item.nom))).map(nom => {
+        return pharmData.find(item => item.nom === nom);
+      });
+      setData(uniqueData)
       // console.log('pharm data ', pharmData);
       // const test = AsyncStorage.getItem('favorites');
       // console.log('test', test);
@@ -58,17 +61,17 @@ const HomeScreen = () => {
       }}
     >
       {Array.isArray(data) && data.filter(item => item.gmaps).map((item) => (
-        <TouchableOpacity onPress={() => handlePress(item.gmaps)}>
+      <TouchableOpacity onPress={() => handlePress(item.gmaps)}>
       <Card style={{ marginBottom: 10 }}>
         <Card.Title
           titleStyle={{ marginLeft: 40 }}
-          title={item.nom}
-          subtitle={item.gmaps}
+          title={item.type}
+          subtitle={item.nom}
           subtitleStyle={{ marginLeft: 40 }}
           titleVariant="bodyLarge"
           left={LeftContent}
         />
-        <Text style={{ marginLeft: 120 }}>{item.telephone} </Text>
+        <Text style={{ marginLeft: 113, marginBottom:10 }}>{item.telephone} </Text>
 
         {/* <Card.Actions>
           <Avatar.Icon size={24} icon="heart" style={{ backgroundColor: 'green' }} />

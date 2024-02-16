@@ -3,10 +3,20 @@ import { Dimensions, ImageBackground,SafeAreaView, Text, TouchableOpacity, View 
 import Spacing from "../constants/Spacing";
 import FontSize from "../constants/FontSize";
 import Colors from "../constants/Colors";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const { height } = Dimensions.get("window");
 
 const WelcomeScreen = ({ navigation }) => {
+  async function navigateTo() {
+    const data = await AsyncStorage.getItem('isLoggedIn'); 
+    // console.log('in app.jsx',data);
+    // if(data){
+    //   navigation.navigate('Home');
+    // }else{
+      navigation.navigate('Login');
+    // }
+  }
   return (
     <SafeAreaView style={{
       backgroundColor: 'white',
@@ -58,7 +68,7 @@ const WelcomeScreen = ({ navigation }) => {
           }}
         >
           <TouchableOpacity
-            onPress={() => navigation.navigate("Login")}
+            onPress={() => navigateTo()}
             style={{
               backgroundColor: Colors.green,
               paddingVertical: Spacing * 1.5,

@@ -20,32 +20,32 @@ function RegisterPage({props}) {
   const [email, setEmail] = useState('');
   const [emailVerify, setEmailVerify] = useState(false);
   const [password, setPassword] = useState('');
-  const [mobile, setMobile] = useState('');
-  const [mobileVerify, setMobileVerify] = useState(false);
   const [passwordVerify, setPasswordVerify] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [confirmPasswordVerify, setConfirmPasswordVerify] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const navigation = useNavigation();
   function handelSubmit() {
     const userData = {
-      email,
-      password,
+      email: email,
+      password: password
     };
-    if (emailVerify && passwordVerify) {
+    console.log(userData);
+    if (emailVerify && passwordVerify && confirmPasswordVerify) {
       axios
-        .post('http://192.168.1.30:5001/register', userData)
+        .post('http://10.0.2.2:3001/users', userData)
         .then(res => {
           console.log(res.data);
-          if (res.data.status == 'ok') {
+          if (res.status == 201) {
             Alert.alert('Registered Successfull!!');
             navigation.navigate('Login');
-          } else {
-            Alert.alert(JSON.stringify(res.data));
-          }
+          } 
         })
         .catch(e => console.log(e));
     } else {
-      Alert.alert('Fill mandatory details');
+      Alert.alert('Fill the inputs details correctly!');
     }
   }
 
@@ -67,6 +67,16 @@ function RegisterPage({props}) {
     if (/(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/.test(passwordVar)) {
       setPassword(passwordVar);
       setPasswordVerify(true);
+    }
+  }
+
+  function handleConfirmPassword(e) {
+    const confirmPasswordVar = e.nativeEvent.text;
+    setConfirmPassword(confirmPasswordVar);
+    setConfirmPasswordVerify(false);
+    if (confirmPasswordVar === password) {
+      setConfirmPassword(confirmPasswordVar);
+      setConfirmPasswordVerify(true);
     }
   }
   return (
@@ -154,22 +164,34 @@ function RegisterPage({props}) {
             <TextInput
               placeholder="Confirm Password"
               style={styles.textInput}
-              onChange={e => handleMobile(e)}
-              maxLength={10}
+              onChange={e => handleConfirmPassword(e)}
+              secureTextEntry={showConfirmPassword}
             />
-            {mobile.length < 1 ? null : mobileVerify ? (
-              <Feather name="check-circle" color="green" size={20} />
-            ) : (
-              <Error name="error" color="red" size={20} />
-            )}
+            <TouchableOpacity onPress={() => setShowConfirmPassword(!showConfirmPassword)}>
+              {confirmPassword.length < 1 ? null : !showConfirmPassword ? (
+                <Feather
+                  name="eye-off"
+                  style={{marginRight: -10}}
+                  color={confirmPasswordVerify ? 'green' : 'red'}
+                  size={23}
+                />
+              ) : (
+                <Feather
+                  name="eye"
+                  style={{marginRight: -10}}
+                  color={confirmPasswordVerify ? 'green' : 'red'}
+                  size={23}
+                />
+              )}
+            </TouchableOpacity>
           </View>
-          {mobile.length < 1 ? null : mobileVerify ? null : (
+          {confirmPassword.length < 1 ? null : confirmPasswordVerify ? null : (
             <Text
               style={{
                 marginLeft: 20,
                 color: 'red',
               }}>
-              Phone number with 6-9 and remaing 9 digit with 0-9
+              Confirm password not match the password!
             </Text>
           )}
         </View>

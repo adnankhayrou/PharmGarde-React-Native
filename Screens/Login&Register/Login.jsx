@@ -45,7 +45,7 @@ function LoginPage({props}) {
     Alert.alert('Error', 'Failed to log in. Please try again later.');
   });
   } else {
-    Alert.alert('Fill mandatory details');
+    Alert.alert('Fill the inputs details correctly!');
   }
 
   }

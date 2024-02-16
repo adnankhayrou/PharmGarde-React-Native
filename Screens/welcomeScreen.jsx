@@ -10,12 +10,12 @@ const { height } = Dimensions.get("window");
 const WelcomeScreen = ({ navigation }) => {
   async function navigateTo() {
     const data = await AsyncStorage.getItem('isLoggedIn'); 
-    // console.log('in app.jsx',data);
-    // if(data){
-    //   navigation.navigate('Home');
-    // }else{
+    console.log('in app.jsx',data);
+    if(data){
+      navigation.navigate('Home');
+    }else{
       navigation.navigate('Login');
-    // }
+    }
   }
   return (
     <SafeAreaView style={{

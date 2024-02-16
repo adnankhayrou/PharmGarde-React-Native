@@ -4,21 +4,36 @@ import { Avatar, Button, Card, Text } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 
-const LeftContent = (props) => <Avatar.Image size={70} style={{marginTop: 20}} source={require('../assets/images/appLogo.png')} />;
+const LeftContent = (props) => <Avatar.Image size={70} style={{marginTop: 50}} source={require('../assets/images/appLogo.png')} />;
 
 
 
 const HomeScreen = () => {
-  // const addToFavotites = async () => {
-  //   try {
-  //     const oldData = (await AsyncStorage.getItem('favorites')) || '[]';
-  //     const newData = JSON.parse(oldData);
-  //     newData.push(data);
-  //     await AsyncStorage.setItem('favorites', JSON.stringify(newData));
-  //   } catch (e) {
-  //     console.log(e);
-  //   }
-  // };
+  const addToFavorites = async (item) => {
+    const test = await AsyncStorage.getItem('favorites');
+            console.log('hada test', test);
+    try {
+        let oldData = JSON.parse(await AsyncStorage.getItem('favorites'));
+        if (!Array.isArray(oldData)) {
+            oldData = [];
+        }
+        const isDuplicate = oldData.some(existingItem => existingItem && existingItem.nom === item.nom);
+        if (!isDuplicate) {
+            oldData.push(item);
+            await AsyncStorage.setItem('favorites', JSON.stringify(oldData));
+            console.log('Data added to favorites successfully.');
+        } else {
+            console.log('This item is already in favorites.');
+        }
+    } catch (error) {
+        console.error('Error adding to favorites:', error);
+    }
+};
+
+
+
+
+  
   const [data, setData] = useState();
   const options = {
     method: 'GET',
@@ -41,10 +56,6 @@ const HomeScreen = () => {
         return pharmData.find(item => item.nom === nom);
       });
       setData(uniqueData)
-      // console.log('pharm data ', pharmData);
-      // const test = AsyncStorage.getItem('favorites');
-      // console.log('test', test);
-      
     })
     .catch(error => {
       console.error('Error occurred:', error.message);
@@ -71,16 +82,16 @@ const HomeScreen = () => {
           titleVariant="bodyLarge"
           left={LeftContent}
         />
-        <Text style={{ marginLeft: 113, marginBottom:10 }}>{item.telephone} </Text>
+        <Text style={{ marginLeft: 113 }}>{item.telephone} </Text>
 
-        {/* <Card.Actions>
-          <Avatar.Icon size={24} icon="heart" style={{ backgroundColor: 'green' }} />
+        <Card.Actions>
+          {/* <Avatar.Icon size={24} icon="heart" style={{ backgroundColor: 'green' }} /> */}
           {(
-            <Button icon="plus" mode="outlined " textColor="green" onPress={() => addToFavotites()}>
+            <Button icon="plus" mode="outlined " textColor="green" onPress={() => addToFavorites(item)}>
               Add to favorite
             </Button>
           )}
-        </Card.Actions> */}
+        </Card.Actions>
       </Card>
       </TouchableOpacity>
       ))}

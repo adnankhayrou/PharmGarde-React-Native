@@ -1,17 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { View, ScrollView, TouchableOpacity, Linking } from 'react-native';
+import { View, ScrollView, TouchableOpacity, Linking, Alert, StyleSheet } from 'react-native';
 import { Avatar, Button, Card, Text } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-
-const LeftContent = (props) => <Avatar.Image size={70} style={{marginTop: 50}} source={require('../assets/images/appLogo.png')} />;
-
+import NavigationBar from '../Navigation/NavigationBar'
 
 
-const HomeScreen = () => {
+const LeftContent = () => <Avatar.Image size={70} style={{marginTop: 50}} source={require('../assets/images/appLogo.png')} />;
+
+const HomeScreen = ({ navigation }) => {
   const addToFavorites = async (item) => {
-    const test = await AsyncStorage.getItem('favorites');
-            console.log('hada test', test);
     try {
         let oldData = JSON.parse(await AsyncStorage.getItem('favorites'));
         if (!Array.isArray(oldData)) {
@@ -22,17 +20,15 @@ const HomeScreen = () => {
             oldData.push(item);
             await AsyncStorage.setItem('favorites', JSON.stringify(oldData));
             console.log('Data added to favorites successfully.');
+            Alert.alert('Success', 'Pharmacy added to favorites successfully.');
         } else {
             console.log('This item is already in favorites.');
+            Alert.alert('Alert', 'Pharmacy is already in favorites.');
         }
     } catch (error) {
         console.error('Error adding to favorites:', error);
     }
 };
-
-
-
-
   
   const [data, setData] = useState();
   const options = {
@@ -64,7 +60,7 @@ const HomeScreen = () => {
   },[])
 
   return (
-    <View>
+    <View style={styles.container}>
       <ScrollView
       contentContainerStyle={{
         paddingHorizontal: 10,
@@ -96,8 +92,29 @@ const HomeScreen = () => {
       </TouchableOpacity>
       ))}
       </ScrollView>
+      
+      <NavigationBar navigation={navigation} />
+
     </View>
   )
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'flex-end',
+  },
+  button: {
+    backgroundColor: 'green',
+    paddingVertical: 20,
+    width: '48%',
+    borderRadius: 5,
+  },
+  buttonText: {
+    color: 'white',
+    fontSize: 16,
+    textAlign: 'center',
+  },
+});
 
 export default HomeScreen

@@ -52,7 +52,7 @@ const FavoriteScreen = ({ navigation }) => {
                 }}
             >
                 {data.map((item) => (
-                    <TouchableOpacity key={item.codeCog} onPress={() => handlePress(item.gmaps)}>
+                    <TouchableOpacity key={item.telephone} onPress={() => handlePress(item.gmaps)}>
                         <Card style={{ marginBottom: 10 }}>
                             <TouchableOpacity onPress={() => removeFromFavorites(item)}>
                                 <Card.Actions>

@@ -17,6 +17,7 @@ const HomeScreen = ({ navigation }) => {
         await AsyncStorage.setItem('favorites', JSON.stringify(oldData));
         console.log('Data added to favorites successfully.');
         Alert.alert('Success', 'Pharmacy added to favorites successfully.');
+        loadFavorites()
       } else {
         console.log('This item is already in favorites.');
         Alert.alert('Alert', 'Pharmacy is already in favorites.');
@@ -26,23 +27,35 @@ const HomeScreen = ({ navigation }) => {
     }
   };
 
-  const [data, setData] = useState([]);
+  const handlePress = (url) => {
+    Linking.openURL(url);
+};
 
+  const [data, setData] = useState([]);
   const [favorites, setFavorites] = useState([]);
 
-  const fetchPharmacies = async () => {
-    try {
-      const response = await axios.get('https://pharmacies-de-garde-nc.p.rapidapi.com/gardes', {
-        headers: {
-          'X-RapidAPI-Key': '38bb0f6e0cmsh9909597bd7d7f88p1c43a5jsn1ed9e0b1586e',
-          'X-RapidAPI-Host': 'pharmacies-de-garde-nc.p.rapidapi.com'
-        }
-      });
-      setData(response.data);
-    } catch (error) {
-      console.error('Error fetching data:', error);
-      Alert.alert('Error', 'Failed to fetch data. Please try again later.');
+  const options = {
+    method: 'GET',
+    url: 'https://pharmacies-de-garde-nc.p.rapidapi.com/gardes',
+    headers: {
+      'X-RapidAPI-Key': '38bb0f6e0cmsh9909597bd7d7f88p1c43a5jsn1ed9e0b1586e',
+      'X-RapidAPI-Host': 'pharmacies-de-garde-nc.p.rapidapi.com'
     }
+  };
+
+  const fetchPharmacies = async () => {
+    axios.request(options)
+    .then(res => {
+      const pharmData = res.data;
+      const uniqueData = Array.from(new Set(pharmData.map(item => item.nom))).map(nom => {
+        return pharmData.find(item => item.nom === nom);
+      });
+      setData(uniqueData)
+    })
+    .catch(error => {
+      console.error('Error occurred:', error.message);
+      Alert.alert('Error', 'Failed to log in. Please try again later.');
+    });
   };
 
   const loadFavorites = async () => {
@@ -59,7 +72,8 @@ const HomeScreen = ({ navigation }) => {
   useEffect(() => {
     fetchPharmacies();
     loadFavorites();
-  }, [loadFavorites]);
+  }, []);
+
 
   return (
     <View style={styles.container}>
@@ -70,7 +84,7 @@ const HomeScreen = ({ navigation }) => {
         }}
       >
         {Array.isArray(data) && data.filter(item => item.gmaps).map((item) => (
-          <TouchableOpacity key={item.nom} onPress={() => handlePress(item.gmaps)}>
+          <TouchableOpacity key={item.telephone} onPress={() => handlePress(item.gmaps)}>
             <Card style={{ marginBottom: 10 }}>
             {favorites.some(favorite => favorite.nom === item.nom) && (
                 <Card.Actions>
